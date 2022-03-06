@@ -16,11 +16,11 @@ Y_k = CX_k + \varepsilon_k, \ k = 1,..., T
 $$
 where $Y_i = {(y_{1k},... y_{mk})}^T$ is a $mx1$ response vector, $C$ is a $mxn$ regression coefficient matrix, $X_k = {(x_{1k},... x_{mk})}^T$ is a $nx1$ predictor vector, and $\varepsilon_k = {(\varepsilon_{1k},... \varepsilon_{mk})}^T$ is a $mx1$ error vector with $E(\varepsilon_k) = 0$ and $cov(\varepsilon_k) = \Sigma_{\varepsilon \varepsilon}$, does not make use of the fact that the response variables are likely correlated. In addition, in many practical situations, there is often a need to reduce the number of parameters in the model since it can be too large. 
 
-Further assuming lower rank of the matrix $C$ such that
+Further assuming reduced rank of the matrix $C$ such that
 $$
 rank(C) = r \leq min(m, n),
 $$
-lead us to two implications. First, the linear combination, $l^T Y_k,$ $i = 1,...,(m-r),$ can be modeled through the distribution of the error term $\varepsilon_k$. Second, $C$ can be expressed as $C = AB$, where A is of dimension $mxr$ and B is of dimension $rxn$. Then, the above multivariate linear model can be rewritten as 
+leads us to two implications. First, let $l$ be the constraint vector, the linear combination, $l^T Y_k,$ $i = 1,...,(m-r),$ can be modeled through the distribution of the error term $\varepsilon_k$ (w/o $X_k$). Second, $C$ can be expressed as $C = AB$, where A is of dimension $mxr$ and B is of dimension $rxn$. Then, the above multivariate linear model can be rewritten as 
 
 $$
 Y_k = A(BX_k) + \varepsilon_k, \ k = 1,..., T, 

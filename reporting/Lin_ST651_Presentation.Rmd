@@ -18,20 +18,20 @@ In many practical situations, there is also often a need to reduce the number of
 
 ## Introduction 
 
-Further assuming lower rank of the matrix $C$ such that
+Further assuming reduced rank of the matrix $C$ such that
 $$
 rank(C) = r \leq min(m, n)
 $$
-lead us to two implications.
+leads us to two implications.
 
-1. The linear combination, $l^T Y_k,$ $i = 1,...,(m-r),$ can be modeled through the distribution of the error term $\varepsilon_k$. 
+1. Let $l$ be the constraint vector, the linear combination, $l^T Y_k,$ $i = 1,...,(m-r),$ can be modeled through the distribution of the error term $\varepsilon_k$ (w/o referencing to the predictors $X_k$). 
 
 2. $C$ can be expressed as $C = AB$, where A is of dimension $mxr$ and B is of dimension $rxn$. Then, the multivariate linear model can be rewritten as 
 
 $$
 Y_k = A(BX_k) + \varepsilon_k, \ k = 1,..., T, 
 $$
-where $BX_k$ is of reduced dimension $rx1$, and as a result, there is a gain in simplicity and interpretation. 
+where $BX_k$ is of reduced dimension with *only* $r$ components, and as a result, there is a gain in simplicity and interpretation. 
 
 ## Introduction 
 
@@ -58,4 +58,121 @@ Applications of the reduced-rank regression model include
 
 (3) the relationship between measurements on solar radiation taken over various sites in Scotland and the physical characteristics of the sites (Glasbey, 1992), etc,
 
+
 ## Estimation 
+
+The parameters that are to be estimated are the matrix $A$ of dimension $mxr$, $B$ of dimension $rxn$ and $\Sigma_{\varepsilon \varepsilon}$ of the error term. 
+
+To estimate $A$ and $B$, we need the Brillinger's theorem (Brillinger, 1981, Section 10.2), which can be proven by the Eckart-Young theorem (Eckart and Young, 1936). 
+
+
+
+
+## Brillinger's Theorem
+
+Suppose the random vector $(Y, X)$ has mean vector $0$ and covariance matrix $Cov(Y, X) = \Sigma_{yx} = {\Sigma_{xy}}^T$ and $Cov(X) = \Sigma_{xx}$ is nonsingular, then for any positive-definite matrix $\Gamma$, the $mxr$ matrix $A$ and $rxn$ matrix $B$, for $r \leq min(m, n)$ that minimize 
+
+$$
+tr(E(\Gamma^{1/2} (Y - ABX) {(Y - ABX)}^T  \Gamma^{1/2}))
+$$
+
+are given by 
+
+$$
+A = \Gamma^{1/2} V, \ \ \ \ B = V^T \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1}, 
+$$
+where $V = (V_1,...,V_r)$ and $V_j$ is the (normalized) eigenvector that corresponds to the $j$th largest eigenvalue $\lambda_j^2$ of the matrix $\Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1} \Sigma_{xy} \Gamma^{1/2}$, $j=1,...,r$. 
+
+
+
+
+## Remark - SVD (Singular Value Decomposition)
+
+Remark. Brillinger's theorem is proved by setting $S^* = \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1}$, where the positive square roots of $SS^T$ are called the singular values of the matrix $S$. 
+
+In general, a $mxn$ matrix $S$ of rank $s$ can be expressed in the singular value decomposition as $S = V \Lambda U^T$, where $\Lambda = diag(\lambda_1,...\lambda_s)$ with ${\lambda_i}^2 > 0$ and $V$ is a $mxs$ matrix s.t. $V^TV = I_s$ and $U$ is a $nxs$ matrix s.t. $U^TU = I_s$. 
+
+
+
+
+## Estimation - $\hat{\beta}_{RR}$ (or $\hat{A}$ and $\hat{B}$)
+
+Back to the model, recall that in the full-rank case, the OLS estimator is given as
+
+$$
+\hat{\beta}_{OLS} = C^T = {(X^TX)}^{-1} X^T Y, 
+$$
+
+in the reduced-rank case and at the simple level, the estimator can be written as
+
+$$
+\hat{\beta}_{RR} = B^T A^T = {(X^TX)}^{-1} X^T Y V V^T = \hat{\beta}_{OLS} V V^T. 
+$$
+
+Note. 
+
+1. $C = AB = \Gamma^{1/2} V V^T \Gamma^{1/2} Y^T X {(X^TX)}^{-1} = P_{\Gamma} Y^T X {(X^TX)}^{-1},$ where $P_{\Gamma}$ is an idempotent matrix for any $\Gamma$ (Brillinger's theorem). 
+
+2. In the reduced-rank regression, $\Gamma$ is typically set to be the identity matrix $I$. 
+
+
+## Estimation - $\hat{\Sigma_{\varepsilon \varepsilon}}$
+
+To maximize 
+$$
+L(C, \Sigma_{\varepsilon \varepsilon}) = (\frac{T}{2}) (log|{\Sigma_{\varepsilon \varepsilon}}^{-1}| - tr({\Sigma_{\varepsilon \varepsilon}}^{-1}W))
+$$
+is the same as minimizing $|W|$ (the determinant of $W$), where 
+
+$$
+W = \tilde{\Sigma_{\varepsilon \varepsilon}} + (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T. 
+$$
+
+It has been shown that the solutions 
+
+$$
+A = \Gamma^{1/2} V, \ \ \ \ B = V^T \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1},
+$$
+
+with the choice of $\Gamma = {\Sigma_{\varepsilon \varepsilon}}^{-1}$, minimizes simultaneously all the eigenvalues of ${\Sigma_{\varepsilon \varepsilon}}^{-1}W$ and hence minimizes $|W|$ (Robinson, 1974). 
+
+## Estimation
+
+So, $\hat{A}_r$ and $\hat{B}_r$ are ML estimates for $A$ and $B$. 
+
+However, 
+
+$$
+\tilde{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \tilde{C}X) {(Y - \tilde{C}X)}^T
+$$
+
+is the ML estimate in the full-rank regression model. 
+
+$$
+\hat{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - C_r X) {(Y - C_r X)}^T
+$$
+
+is the ML estimate under the reduced-rank structure. 
+
+## Discussion 
+
+An explicit solution for the matrices $A$ and $B$ can be obtained by computing eigenvalues and eigenvectors of $SS^T$ or $S^TS$. 
+
+However, when an explicit solution is not possible to find, iterative procedures need to be considered. 
+
+## Reference 
+
+Velu, R., & Reinsel, G. C. (2013). Multivariate reduced-rank regression: theory and applications (Vol. 136). Springer Science & Business Media.
+
+Turgeon, M. (2021, January 19). Reduced Rank Regression [Video]. YouTube. https://www.youtube.com/watch?v=AYKmzhbsTwg&list=PLYpxJrn6DQgj3bCPRQDogPKkgzILomlAN&index=4&t=4s
+
+## Thank you! 
+
+Reduced-Rank Regression Model: A Review
+
+Frances Lin
+
+PhD student, Dept. of Statistics, Oregon State University
+
+
+
