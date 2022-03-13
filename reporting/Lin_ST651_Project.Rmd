@@ -55,7 +55,10 @@ where $V = (V_1,...,V_r)$ and $V_j$ is the (normalized) eigenvector that corresp
 
 **Remark - SVD (Singular Value Decomposition)** Brillinger's theorem is proved by setting $S^* = \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1}$ (and $P^* = \Gamma^{1/2} AB {\Sigma_{xx}}^{1/2}$), where the positive square roots of $SS^T$ are called the *singular values* of the matrix $S$. 
 
-In general, a $mxn$ matrix $S$, of rank $s$, can be expressed in the *singular value decomposition* as $S = V \Lambda U^T$, where $\Lambda = diag(\lambda_1,...\lambda_s)$ with ${\lambda_1}^2 \geq... \geq {\lambda_s}^2 > 0$ being the nonzero eigenvalues of $SS^T$, $V = (V_1,...V_s)$ is a $mxs$ matrix s.t. $V^TV = I_s$, and $U = (U_1,...U_s)$ is a $nxs$ matrix s.t. $U^TU = I_s$. 
+In general, a $mxn$ matrix $S$, of rank $s$, can be expressed in the *singular value decomposition* as 
+$$S = V \Lambda U^T,
+$$
+where $\Lambda = diag(\lambda_1,...\lambda_s)$ with ${\lambda_1}^2 \geq... \geq {\lambda_s}^2 > 0$ being the nonzero eigenvalues of $SS^T$, $V = (V_1,...V_s)$ is a $mxs$ matrix s.t. $V^TV = I_s$, and $U = (U_1,...U_s)$ is a $nxs$ matrix s.t. $U^TU = I_s$. 
 
 \newpage
 
