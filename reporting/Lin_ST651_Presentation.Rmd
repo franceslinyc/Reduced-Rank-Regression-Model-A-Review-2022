@@ -96,7 +96,7 @@ where $V = (V_1,...,V_r)$ and $V_j$ is the (normalized) eigenvector that corresp
 
 ## Eckart-Young Theorem
 
-Let $S$ be a matrix of $mxn$ and of rank $m$, the the Euclidean form $tr((S-P){(S-P)}^T)$ is minimum among matrices $P$ of the same size but of rank $r (\leq m)$, when  $P = MM^TS$, where $M$ is $mxr$ and the columns of $M$ are the the first $r$ (normalized) eigenvectors of $SS^T$ (i.e. the normalized eigvenvectors ).  
+Let $S$ be a matrix of $mxn$ and of rank $m$, the the Euclidean form $tr((S-P){(S-P)}^T)$ is minimum among matrices $P$ of the same size but of rank $r (\leq m)$, when  $P = MM^TS$, where $M$ is $mxr$ and the columns of $M$ are the the first $r$ (normalized) eigenvectors of $SS^T$ (i.e. the normalized eigvenvectors).  
 
 
 
@@ -143,9 +143,7 @@ Maximizing the log-likelihood
 $$
 l(C, \Sigma_{\varepsilon \varepsilon}) = (\frac{T}{2}) (log|{\Sigma_{\varepsilon \varepsilon}}^{-1}| - tr({\Sigma_{\varepsilon \varepsilon}}^{-1}W))
 $$
-is the same as minimizing $|W|$ (the determinant of $W$) and hence minimizing $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$, where $W = (1/T) (Y - CX) {(Y - CX)}^T$.
-
-$W$ can be further rewritten as
+is the same as minimizing $|W|$ (the determinant of $W$) and hence minimizing $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$, where $W = (1/T) (Y - CX) {(Y - CX)}^T$, and $W$ can be further rewritten as
 
 $$
 W = ... = \tilde{\Sigma_{\varepsilon \varepsilon}} + (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T. 
@@ -158,6 +156,25 @@ $$
 $$
 
 with the choice of $\Gamma = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}$, minimizes simultaneously all the eigenvalues of ${\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W$ and hence minimizes $|W|$ (Robinson, 1974). 
+
+
+## Estimation - $\hat{A}_r$, $\hat{B}_r$, $\hat{\Sigma_{\varepsilon \varepsilon}}$
+
+This is because $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$ can be rewritten as
+$$
+|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W| = |I_m + {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T| = \prod (1 + \delta_i^2), 
+$$
+where $\delta_i^2$ are the eigenvalues of the matrix ${\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T$. 
+
+
+As a result, minimization of $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$ is the same as simultaneously minimizing all the eigenvalues of 
+$$
+{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T \equiv (S - P) {(S - P)}^T,
+$$
+with $S^* = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1/2} \tilde{C} \hat{\Sigma}_{xx}^{1/2}$ and $P^* = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1/2} AB \hat{\Sigma}_{xx}^{1/2}$. 
+
+The simultaneous minimization is achieved (the equality is attained for all $i$) iff $P = V_r \Lambda_r U^T_r,$ where $S = V \Lambda U^T$ represents the singular decomposition of $S$ (Lemma 2.2).
+
 
 ## Estimation - $\hat{A}_r$, $\hat{B}_r$, $\hat{\Sigma_{\varepsilon \varepsilon}}$
 
@@ -172,16 +189,16 @@ is the ML estimate for C.
 However, note that
 
 $$
-\tilde{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \tilde{C}X) {(Y - \tilde{C}X)}^T
-$$
-
-is the ML estimate in the  regression model. 
-
-$$
 \hat{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \hat{C}_r X) {(Y - \hat{C}_r X)}^T
 $$
 
-is the reduced-rank ML estimate for $\Sigma_{\varepsilon \varepsilon}$. 
+is the reduced-rank ML estimate for $\Sigma_{\varepsilon \varepsilon}$, whereas
+
+$$
+\tilde{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \tilde{C}X) {(Y - \tilde{C}X)}^T
+$$
+
+is the ML estimate in the full-rank case.  
 
 Note. 
 
@@ -197,7 +214,7 @@ Note.
 $$
 Y_k = ABY_k + \varepsilon_k
 $$
-(with $X_k \equiv Y_k$). Applying Brillinger’s theorem and setting $\Gamma = I_m$, the solution is given by $A_r = (V_1,...V_r)$ and $B_r = V^T$ since $\Sigma_{yx} = \Sigma_{yy}$. 
+(with $X_k \equiv Y_k$). Setting $\Gamma = I_m$, the solution is given by $A_r = (V_1,...V_r)$ and $B_r = V^T$ since $\Sigma_{yx} = \Sigma_{yy}$ (Brillinger's theorem). 
 
 ## Discussion 
 

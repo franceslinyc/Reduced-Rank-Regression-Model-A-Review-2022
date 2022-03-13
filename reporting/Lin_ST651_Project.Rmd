@@ -22,7 +22,7 @@ $$
 leads us to two implications. First, let $l$ be the constraint vector, the linear combination, $l^T Y_k,$ $i = 1,...,(m-r),$ can be modeled through the distribution of the error term $\varepsilon_k$ (w/o $X_k$). Second, $C$ can be expressed as $C = AB$, where A is of dimension $mxr$ and B is of dimension $rxn$. Then, the above multivariate linear model can be rewritten as 
 
 $$
-Y_k = A(BX_k) + \varepsilon_k, \ k = 1,..., T, 
+Y_k = ABX_k + \varepsilon_k, \ k = 1,..., T, 
 $$
 where $BX_k$ is of reduced dimension $rx1$, and as a result, there is a gain in simplicity and interpretation since the $r$ linear combinations of the predictors $X_k$ are sufficient to model the response variables $Y_k$. 
 
@@ -51,7 +51,7 @@ A = \Gamma^{1/2} V, \ \ \ \ B = V^T \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1},
 $$
 where $V = (V_1,...,V_r)$ and $V_j$ is the (normalized) eigenvector that corresponds to the $j$th largest eigenvalue $\lambda_j^2$ of the matrix $\Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1} \Sigma_{xy} \Gamma^{1/2}$, $j=1,...,r$. 
 
-**Eckart-Young Theorem** Let $S$ be a matrix of $mxn$ and of rank $m$, the the Euclidean form $tr((S-P){(S-P)}^T)$ is minimum among matrices $P$ of the same size but of rank $r (\leq m)$, when  $P = MM^TS$, where $M$ is $mxr$ and the columns of $M$ are the the first $r$ (normalized) eigenvectors of $SS^T$ (i.e. the normalized eigvenvectors ).  
+**Eckart-Young Theorem** Let $S$ be a matrix of $mxn$ and of rank $m$, the the Euclidean form $tr((S-P){(S-P)}^T)$ is minimum among matrices $P$ of the same size but of rank $r (\leq m)$, when  $P = MM^TS$, where $M$ is $mxr$ and the columns of $M$ are the the first $r$ (normalized) eigenvectors of $SS^T$ (i.e. the normalized eigvenvectors).  
 
 **Remark - SVD (Singular Value Decomposition)** Brillinger's theorem is proved by setting $S^* = \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1}$ (and $P^* = \Gamma^{1/2} AB {\Sigma_{xx}}^{1/2}$), where the positive square roots of $SS^T$ are called the *singular values* of the matrix $S$. 
 
@@ -103,7 +103,27 @@ $$
 \hat{A}_r = \Gamma^{1/2} V, \ \ \ \ \hat{B}_r = V^T \Gamma^{1/2} \Sigma_{yx} {\Sigma_{xx}}^{-1},
 $$
 
-with the choice of $\Gamma = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}$, minimizes simultaneously all the eigenvalues of ${\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W$ and hence minimizes $|W|$ (Robinson, 1974). 
+with the choice of $\Gamma = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}$, minimizes simultaneously all the eigenvalues of ${\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W$ and hence minimizes $|W|$ (Robinson, 1974). This is because $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$ can be rewritten as
+
+$$
+|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W| = |I_m + {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T| = \prod (1 + \delta_i^2), 
+$$
+where $\delta_i^2$ are the eigenvalues of the matrix ${\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T$. As a result, minimization of $|{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1}W|$ is the same as simultaneously minimizing all the eigenvalues of 
+
+$$
+{\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1} (\tilde{C} - AB) \hat{\Sigma}_{xx} {(\tilde{C} - AB)}^T \equiv (S - P) {(S - P)}^T,
+$$
+with $S^* = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1/2} \tilde{C} \hat{\Sigma}_{xx}^{1/2}$ and $P^* = {\tilde{\Sigma}_{\varepsilon \varepsilon}}^{-1/2} AB \hat{\Sigma}_{xx}^{1/2}$. 
+
+The simultaneous minimization is achieved with $P$ chosen as the rank $r$ approximation of $S$ obtained through the singular value decomposition of $S$ (Lemma 2.2).
+
+**Lemma 2.2** Let $S$ be an $mxn$ matrix of rank $m$ and $P$ be an $mxn$ matrix of rank $\leq r (\leq m)$, then, for any $i$, 
+$$
+\lambda_i(S - P) \geq \lambda_{r + i}(S), 
+$$
+where $\lambda_i(S)$ denotes the $i$th largest singular value of the matrix $S$ and $\lambda_{r + i}(S)$ is defined to be zero for $r + i > m$. The equality is attained for all $i$ iff $P = V_r \Lambda_r U^T_r,$ where $S = V \Lambda U^T$ represents the singular decomposition of $S$.
+
+
 Therefore, $\hat{A}_r$ and $\hat{B}_r$ are the ML estimates for $A$ and $B$. Or equivalently, 
 
 $$
@@ -112,21 +132,19 @@ $$
 
 is the ML estimate for C. 
 
-\newpage
-
 However, note that
-
-$$
-\tilde{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \tilde{C}X) {(Y - \tilde{C}X)}^T
-$$
-
-is the ML estimate in the  regression model. 
 
 $$
 \hat{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \hat{C}_r X) {(Y - \hat{C}_r X)}^T
 $$
 
-is the reduced-rank ML estimate for $\Sigma_{\varepsilon \varepsilon}$. 
+is the reduced-rank ML estimate for $\Sigma_{\varepsilon \varepsilon}$, whereas
+
+$$
+\tilde{\Sigma_{\varepsilon \varepsilon}} = (1/T) (Y - \tilde{C}X) {(Y - \tilde{C}X)}^T
+$$
+
+is the ML estimate in the full-rank case. 
 
 Note. 
 
@@ -142,7 +160,7 @@ Note.
 $$
 Y_k = ABY_k + \varepsilon_k
 $$
-(with $X_k \equiv Y_k$). Applying Brillinger’s theorem and setting $\Gamma = I_m$, the solution is given by $A_r = (V_1,...V_r)$ and $B_r = V^T$ since $\Sigma_{yx} = \Sigma_{yy}$.
+(with $X_k \equiv Y_k$). Setting $\Gamma = I_m$, the solution is given by $A_r = (V_1,...V_r)$ and $B_r = V^T$ since $\Sigma_{yx} = \Sigma_{yy}$ (Brillinger's theorem). 
 
 (3) If the error covariance matrix $\Sigma_{\varepsilon \varepsilon}$ is unknown (or is assumed to have the specified form $\Sigma_{\varepsilon \varepsilon} = \sigma^2 \Psi_0$) but is positive-definite, the ML estimates of $A$ and $B$ are obtained by minimizing
 
