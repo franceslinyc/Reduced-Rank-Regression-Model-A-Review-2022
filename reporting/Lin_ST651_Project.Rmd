@@ -60,8 +60,6 @@ $$S = V \Lambda U^T,
 $$
 where $\Lambda = diag(\lambda_1,...\lambda_s)$ with ${\lambda_1}^2 \geq... \geq {\lambda_s}^2 > 0$ being the nonzero eigenvalues of $SS^T$, $V = (V_1,...V_s)$ is a $mxs$ matrix s.t. $V^TV = I_s$, and $U = (U_1,...U_s)$ is a $nxs$ matrix s.t. $U^TU = I_s$. 
 
-\newpage
-
 Back to the model, recall that in the full-rank case, the OLS estimator is given as
 
 $$
