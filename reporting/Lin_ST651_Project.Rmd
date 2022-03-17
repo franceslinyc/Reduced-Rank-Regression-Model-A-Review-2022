@@ -38,7 +38,7 @@ The parameters that are to be estimated are the matrix $A$ of dimension $mxr$, $
 
 Reduced-rank (RR) estimation is obtained as a certain RR approximation of the full-rank least squares estimate of the coefficient matrix. Therefore, to present the estimation, we need the Brillinger's theorem (Brillinger, 1981, Section 10.2), which can be proven by the Eckart-Young theorem (Eckart and Young, 1936). 
 
-**Brillinger's Theorem.** Suppose the random vector $(Y, X)$ has mean vector $0$ and covariance matrix $Cov(Y, X) = \Sigma_{yx} = {\Sigma_{xy}}^T$ and $Cov(X) = \Sigma_{xx}$ is nonsingular, then for any positive-definite matrix $\Gamma$, the $mxr$ matrix $A$ and $rxn$ matrix $B$, for $r \leq min(m, n)$ that minimize 
+**Brillinger's Theorem** Suppose the random vector $(Y, X)$ has mean vector $0$ and covariance matrix $Cov(Y, X) = \Sigma_{yx} = {\Sigma_{xy}}^T$ and $Cov(X) = \Sigma_{xx}$ is nonsingular, then for any positive-definite matrix $\Gamma$, the $mxr$ matrix $A$ and $rxn$ matrix $B$, for $r \leq min(m, n)$ that minimize 
 
 $$
 tr(E(\Gamma^{1/2} (Y - ABX) {(Y - ABX)}^T  \Gamma^{1/2}))
@@ -154,7 +154,7 @@ Note.
 
 ## Discussion 
 
-(1) An explicit solution for the matrices $A$ and $B$ can be obtained by computing eigenvalues and eigenvectors of $SS^T$ or $S^TS$. However, when an explicit solution is not possible to find, iterative procedures need to be considered. 
+(1) An explicit solution for the matrices $A$ and $B$ can be obtained by computing eigenvalues and eigenvectors of $SS^T$ or $S^TS$. However, when an explicit solution is not possible to find, iterative procedures need to be considered. Several procedures such as partial least squares procedure and the modification of the Newton-Raphson method due to Aitchison and Silvey (1958) are introduced in the later sections (3.5). 
 
 (2) Reduced-rank regression (RRR) model has connections to PCA (principal component analysis) and CCA (canonical correlation analysis). Indeed, the PCA problem can be represented as a RRR model such that
 
@@ -179,6 +179,7 @@ Then the ML solution can be found using the Brillinger's theorem.
 
 (4) Reduced-rank regression model focus on the rank reduction of the mean structure $CX_k$. There are other types of (spatial or spatio-temporal) models such as fixed rank kriging that aim to reduce the rank of the covariance matrix $\Sigma$ instead.
 
+(5) The later chapters (4, 5) go into discussing reduced-rank regression model with autoregressive errors, multivariate time series with reduced ranks, etc. It would be interesting to delve into them as well as exploring reduced-ranks in the spatial setting.
 
 
 ## Reference 
